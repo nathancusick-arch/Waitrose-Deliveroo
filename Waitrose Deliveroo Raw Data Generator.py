@@ -9,7 +9,7 @@ import pandas as pd
 import streamlit as st
 
 
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.2.1"
 
 WAITROSE_CLIENT = "Waitrose Supermarkets"
 RAPID_DELIVERY = "Rapid Delivery"
@@ -33,39 +33,17 @@ class QuestionSpec:
     aliases: tuple[str, ...]
 
 
-# These are the non-upload questions used by the Waitrose Deliveroo audit.
-# Aliases allow old and new questionnaire wording to be combined into one
-# stable report column. If more than one alias exists in an export, the first
-# non-blank answer in alias order is used for each audit.
+# The report contains the nine identity fields followed by the 14 relevant
+# Waitrose Deliveroo questions, in the same order as the audits export.
+# "Is there anything unusual you wish to explain?" and its older equivalent,
+# "Did anything unusual occur on the audit...", are deliberately excluded.
 QUESTION_SPECS = (
-    QuestionSpec(
-        "Please describe the doorstep transaction:",
-        (
-            "Please describe the doorstep transaction:",
-            "Please describe the delivery transaction:",
-        ),
-    ),
     QuestionSpec(
         "Please enter the order number:",
         (
             "Please enter the order number:",
             "Please enter your order number:",
             "Please enter the 11-digit order number:",
-        ),
-    ),
-    QuestionSpec(
-        "Please use this space to explain anything unusual about your visit or to clarify any detail of your report:",
-        (
-            "Please use this space to explain anything unusual about your visit or to clarify any detail of your report:",
-            "Is there anything unusual you wish to explain?",
-        ),
-    ),
-    QuestionSpec(
-        "Please confirm below whether or not you were asked for ID:",
-        (
-            "Please confirm below whether or not you were asked for ID:",
-            "Please confirm below if the rider asked for ID?",
-            "Please confirm below if the courier asked for ID?",
         ),
     ),
     QuestionSpec(
@@ -136,6 +114,27 @@ QUESTION_SPECS = (
             "If no, then did the rider hand you the delivery?",
             "If no, then did the driver hand you the delivery?",
             "If no, did the rider hand you the delivery?",
+        ),
+    ),
+    QuestionSpec(
+        "Please describe the doorstep transaction:",
+        (
+            "Please describe the doorstep transaction:",
+            "Please describe the delivery transaction:",
+        ),
+    ),
+    QuestionSpec(
+        "Please use this space to explain anything unusual about your visit or to clarify any detail of your report:",
+        (
+            "Please use this space to explain anything unusual about your visit or to clarify any detail of your report:",
+        ),
+    ),
+    QuestionSpec(
+        "Please confirm below whether or not you were asked for ID:",
+        (
+            "Please confirm below whether or not you were asked for ID:",
+            "Please confirm below if the rider asked for ID?",
+            "Please confirm below if the courier asked for ID?",
         ),
     ),
     QuestionSpec(
@@ -384,6 +383,7 @@ The app will:
 
 - exclude every retailer and delivery platform other than **Waitrose / Deliveroo**
 - use local visit dates and times
+- include the **14 relevant Waitrose question columns** in export order
 - combine recognised old and new wording for equivalent Waitrose questions
 - sort the report chronologically
 - name the output using the month covered by the report
